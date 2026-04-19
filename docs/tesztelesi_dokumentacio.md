@@ -1,12 +1,5 @@
 # Feladat API – Tesztelési dokumentáció
 
-**Keretrendszer:** Jest 29 + Supertest  
-**DB stratégia:** `jest.mock('../database')`  
-**Tesztelt modulok:** taskPost, taskPut, taskDelete  
-**Összes teszteset:** 41
-
----
-
 ## Tartalomjegyzék
 
 1. [Bevezetés és architektúra](#1-bevezetés-és-architektúra)
@@ -83,6 +76,11 @@ npm run test:html
 ---
 
 ## 2. Feladatok (task) - Api tesztelési dokumentáció
+
+**Keretrendszer:** Jest 29 + Supertest  
+**DB stratégia:** `jest.mock('../database')`  
+**Tesztelt modulok:** taskPost, taskPut, taskDelete  
+**Összes teszteset:** 41
 
 ---
 
@@ -206,187 +204,139 @@ A controller először ellenőrzi a kérelmező szerepkörét (`selectTaskUserRo
 ---
 ---
 
-## 3 Projekt API – Tesztelési Dokumentáció
+## 3. Projekt API – Tesztelési dokumentáció
 
-Ez a dokumentáció a vizsgaremek backendjének projektkezelő API-jához készült tesztfájlokat mutatja be.
-A tesztek célja a backend működésének, validációinak és hibakezelésének ellenőrzése.
+**Keretrendszer:** Jest 29 + Supertest  
+**DB stratégia:** `jest.mock('../database')` / `jest.mock('../models/projectModel')`  
+**Tesztelt modulok:** projectPost, projectPut, projectDelete  
+**Összes teszteset:** 32
 
-A tesztelés Supertest + Jest környezetben történt, mockolt Express alkalmazással.
-A projekt API tesztjei a valós backend viselkedéséhez igazodnak, és a projectModel függvények mockolásával működnek.
+---
 
-### 3.1. Tesztelt modulok
+## 3.1 Tesztelt modulok
+
 A projekt API három fő funkciót tartalmaz, mindegyik külön tesztfájlban:
 
-projectPost.test.js – új projekt, felhasználó hozzáadása, üzenetküldés
+- **projectPost.test.js** – új projekt, felhasználó hozzáadása, üzenetküldés
+- **projectPut.test.js** – projekt módosítása
+- **projectDelete.test.js** – projekt törlése és felhasználó eltávolítása
 
-projectPut.test.js – projekt módosítása
+---
 
-projectDelete.test.js – projekt törlése és felhasználó eltávolítása
+## 3.2 projectPost.test.js – POST végpontok
 
-A tesztek a backend valós válaszait reprodukálják.
+### 3.2.1 POST `/:tarsasag_id/ujprojekt` – Új projekt létrehozása
 
-### 3.2. projectPost.test.js – Új projekt, felhasználó hozzáadása, üzenetküldés
-#### 3.2.1 Mockolás
-A projekt POST tesztekben nem a database, hanem a projectModel kerül mockolásra:
+Az `insertNewProject()` multi-statement SQL-t tartalmaz (két INSERT egyszerre). Ha az SQL hibát generál, a backend 500-as hibát dob.
 
-js
-jest.mock('../models/projectModel', () => ({
-    insertNewProject: jest.fn(),
-    insertUserToProject: jest.fn(),
-    insertProjectMessage: jest.fn()
-}));
-Ez azért szükséges, mert:
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | DB hiba létrehozáskor | `500` | `cb(new Error('DB hiba'))` | szerverhiba |
+| 2 | Hiányzó társaság ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen társaság ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'tarsasag_id'` |
+| 4 | Hiányzó cím | `400` | – (validátor) | `hibak[].mezo === 'cim'` |
+| 5 | Helytelen dátumformátum | `400` | – (validátor) | `hibak[].mezo === 'hatarido'` |
 
-a controller nem közvetlenül a db-t,
+### 3.2.2 POST `/:projekt_id/felhasznalo_hozzaadas` – Felhasználó hozzáadása projekthez
 
-hanem a projectModel függvényeit hívja.
+Ha a felhasználó és a projekt nem egy társasághoz tartozik, az SQL 0 sort érint → 403.
 
-A mockolt függvények callback‑esek:
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Felhasználó és projekt eltérő társaság | `403` | `cb(null, { affectedRows: 0 })` | – |
+| 2 | Hiányzó projekt ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen projekt ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'projekt_id'` |
+| 4 | Hiányzó felhasználó ID | `400` | – (validátor) | `hibak[].mezo === 'felhasznalo_id'` |
+| 5 | Érvénytelen felhasználó ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'felhasznalo_id'` |
 
-js
-projectModel.insertNewProject.mockImplementationOnce((datas, cb) => cb(new Error("DB hiba")));
-#### 3.2.2 Tesztelt végpontok
-POST /api/projektek/:tarsasag_id/ujprojekt
+### 3.2.3 POST `/:projekt_id/ujuzenet` – Üzenet létrehozása projekthez
 
-POST /api/projektek/:projekt_id/felhasznalo_hozzaadas
+Nincs jogosultság-ellenőrzés – bármely bejelentkezett felhasználó küldhet üzenetet. DB hiba esetén 500-as válasz.
 
-POST /api/projektek/:projekt_id/ujuzenet
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | DB hiba üzenetküldéskor | `500` | `cb(new Error('DB hiba'))` | szerverhiba |
+| 2 | Hiányzó projekt ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen projekt ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'projekt_id'` |
+| 4 | Hiányzó tartalom | `400` | – (validátor) | `hibak[].mezo === 'tartalom'` |
+| 5 | Érvénytelen tartalom (szám) | `400` | – (validátor) | `hibak[].mezo === 'tartalom'` |
 
-#### 3.2.3 Mit ellenőriznek a tesztek?
-kötelező mezők megléte
+---
 
-hibás vagy hiányzó ID-k kezelése
+## 3.3 projectPut.test.js – PUT végpont
 
-hibás dátumformátum
+### 3.3.1 PUT `/:projekt_id/projekt_modositas` – Projekt módosítása
 
-hibás adattípusok
+A controller `updateProject()` hívással dolgozik. A backend nem ellenőrzi, hogy a projekt létezik-e – az SQL UPDATE akkor is lefut, ha 0 sort érint, és a controller mindig 200-at küld vissza.
 
-backend valós válaszai (500, 400, 404, 403)
+> **Megjegyzés a `leiras` mezőről:** A `projectPutValidator`-ban a `leiras` mező kötelező és szöveg típusú; szám esetén 400 hibát ad.
 
-#### 3.2.4 Backend valós viselkedése (amihez a tesztek igazodnak)
-Új projekt létrehozása
-A backend jelenlegi SQL struktúrája miatt:
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres projekt módosítás (0 érintett sor esetén is) | `200` | – | `res.status === 200` |
+| 2 | Hiányzó projekt ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen projekt ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'projekt_id'` |
+| 4 | Hiányzó cím (üres string) | `400` | – (validátor) | `hibak[].mezo === 'cim'` |
+| 5 | Cím szám | `400` | – (validátor) | `hibak[].mezo === 'cim'` |
+| 6 | Leírás szám | `400` | – (validátor) | `hibak[].mezo === 'leiras'` |
+| 7 | Helytelen dátumformátum (pont elválasztó) | `400` | – (validátor) | `hibak[].mezo === 'hatarido'` |
+| 8 | Hiányzó állapot (üres string) | `400` | – (validátor) | `hibak[].mezo === 'allapot'` |
+| 9 | Állapot szám | `400` | – (validátor) | `hibak[].mezo === 'allapot'` |
 
-a projekt létrehozása 500-as hibát dob, ha az SQL hibát generál
+---
 
-a teszt ezt mockolja:
+## 3.4 projectDelete.test.js – DELETE végpontok
 
-js
-cb(new Error("DB hiba"))
-Felhasználó hozzáadása projekthez
-A backend:
+### 3.4.1 DELETE `/:projekt_id/torles` – Projekt törlése
 
-ha a projekt nem létezik → 403
+A controller kétlépéses logikát alkalmaz: először lekéri a projekt aktuális állapotát, majd dönt:
 
-ha a felhasználó nem tartozik a társasághoz → 403
+- Ha az állapot `'torolve'`: végleges törlés (hard delete)
+- Egyéb esetben: soft delete (állapot → `'torolve'`)
 
-ha már résztvevő → 406, de a valós működés 403-at ad
+```js
+// soft delete esetén
+db.query.mockImplementationOnce((sql, params, cb) => cb(null, [{ id: 1, allapot: 'uj' }]));
+db.query.mockImplementationOnce((sql, params, cb) => cb(null, { affectedRows: 1 }));
+```
 
-A teszt ezt mockolja:
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Projekt nem létezik | `404` | `cb(null, [])` | – |
+| 2 | Hiányzó projekt ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen projekt ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'projekt_id'` |
 
-js
-cb(null, { affectedRows: 0 })  // projekt nem létezik / nincs jogosultság
-Üzenet létrehozása
-A backend:
+### 3.4.2 DELETE `/:projekt_id/felhasznalo_torles` – Felhasználó eltávolítása projektből
 
-ha a projekt nem létezik → 500
+A controller először ellenőrzi a kérelmező szerepkörét (`selectProjectUserRole`), majd végrehajtja a törlést (`deleteUserFromProject`).
 
-ha a felhasználó nincs hozzárendelve → 500
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Projekt nem létezik (nincs jogosultság) | `403` | `cb(null, [])` | – |
+| 2 | Hiányzó projekt ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen projekt ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'projekt_id'` |
+| 4 | Hiányzó törlendő felhasználó ID | `400` | – (validátor) | `hibak[].mezo === 'torlendo_felhasznalo_id'` |
+| 5 | Érvénytelen törlendő felhasználó ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'torlendo_felhasznalo_id'` |
 
-A teszt ezt mockolja:
+---
 
-js
-cb(new Error("DB hiba"))
-### 3.3. projectPut.test.js – Projekt módosítása
-#### 3.3.1 Tesztelt végpont
-PUT /api/projektek/:projekt_id/projekt_modositas
+## 3.5 Tesztfuttatás eredménye
 
-#### 3.3.2 Mit ellenőriznek a tesztek?
-kötelező mezők megléte
-
-hibás mezők (szám helyett szöveg stb.)
-
-hibás dátumformátum
-
-hibás projekt ID
-
-hiányzó projekt ID
-
-#### 3.3.3 Backend valós viselkedése
-A backend nem ellenőrzi, hogy a projekt létezik-e.
-Az SQL UPDATE:
-
-akkor is lefut, ha 0 sort érint
-
-MySQL nem dob hibát
-
-a controller mindig 200-at küld vissza
-
-A teszt is 200-at vár, nem 500-at.
-
-### 3.4. projectDelete.test.js – Projekt törlése és felhasználó eltávolítása
-4.1 Tesztelt végpontok
-DELETE /api/projektek/:projekt_id/torles
-
-DELETE /api/projektek/:projekt_id/felhasznalo_torles
-
-#### 3.4.2 Mit ellenőriznek a tesztek?
-hibás projekt ID → 400
-
-hiányzó projekt ID → 404
-
-hibás felhasználó ID → 400
-
-hiányzó felhasználó ID → 400
-
-#### 3.4.3 Backend valós válaszai
-Projekt törlése
-ha a projekt nem létezik → 404
-
-Felhasználó törlése projektből
-A backend:
-
-ha a projekt nem létezik → 403
-
-ha a felhasználó nincs hozzárendelve → 403
-
-A tesztek ehhez igazodnak.
-
-### 3.5. Tesztfuttatás eredménye
-A teljes tesztcsomag futtatása:
-
-Kód
+```
 Test Suites: 3 passed, 3 total
 Tests:       32 passed, 32 total
-Ez azt jelenti:
+```
 
-minden route működik
+---
 
-minden validátor működik
+## 3.6 Összefoglalás
 
-minden hibakezelés helyes
-
-a tesztek a backend valós működéséhez igazodnak
-
-a teljes rendszer stabil és konzisztens
-
-#### 3.6. Összegzés
-A projekt API tesztelése lefedi:
-
-projekt létrehozás
-
-projekt módosítás
-
-projekt törlése
-
-felhasználó hozzáadása
-
-felhasználó eltávolítása
-
-üzenetküldés
-
-A tesztek valós backend viselkedést ellenőriznek,
-és a mockolt projectModel segítségével megbízhatóan reprodukálják a rendszer működését.
+| Fájl | Tesztesetek | Sikeres eset | Validációs / hiba eset |
+|---|:---:|:---:|:---:|
+| projectPost.test.js | 15 | 0 | 15 |
+| projectPut.test.js | 9 | 1 | 8 |
+| projectDelete.test.js | 8 | 0 | 8 |
+| **Összesen** | **32** | **1** | **31** |
 
 ---
 ---
@@ -396,7 +346,7 @@ A tesztek valós backend viselkedést ellenőriznek,
 **Keretrendszer:** Jest 29 + Supertest  
 **DB stratégia:** `jest.mock('../models/companyModel')`, `jest.mock('../models/userModel')`  
 **Tesztelt modulok:** companyPost, companyPut, companyDelete, userPost, userPut, userDelete  
-**Összes teszteset:** 65
+**Összes teszteset:** 80
 
 ---
 
@@ -409,50 +359,6 @@ A tesztek az alábbi három rétegre terjednek ki:
 - **Validációs réteg** – express-validator szabályok (`companyValidators.js`, `userValidators.js`)
 - **Controller réteg** – üzleti logika, HTTP státuszkódok (`companyController.js`, `userController.js`)
 - **Routing réteg** – URL-paraméterek, hiányzó azonosítók
-
-#### 4.1.2 Mock stratégia
-
-A tesztek `jest.mock('../models/companyModel')` és `jest.mock('../models/userModel')` segítségével felülírják a valódi modelhívásokat. A model-függvényeket `jest.fn()`-nel definiáljuk közvetlenül minden tesztesetben.
-
-A leggyakoribb mock variánsok:
-
-| Eset | Mock hívás | Mit szimulál |
-|---|---|---|
-| Sikeres DB művelet | `callback(null, { affectedRows: 1 })` | 1 sor érintett – siker |
-| Nem talált rekordot | `callback(null, { affectedRows: 0 })` | 0 sor érintett – 403/404 válasz |
-| DB hiba | `callback(new Error('...'), null)` | 500 szerverhiba |
-| Üres lista | `callback(null, [])` | Rekord nem létezik |
-| Tagság hiánya | `callback(null, [])` | Nem tagja a társaságnak – 403 |
-
-> **Fontos:** `mockImplementationOnce` csak a következő hívásra érvényes. Ha egy controller több modell-hívást végez (pl. `getUserRoleInCompany` kétszer), mindkettőt külön kell mockolni – sorban, ahogy a controller hívja őket.
-
-#### 4.1.3 App felépítés a tesztekben
-
-Minden tesztfájlban az Express app ugyanígy épül fel, a JWT authentikációt middleware-rel helyettesítjük:
-
-```js
-jest.mock('../models/companyModel');
-const companyModel = require('../models/companyModel');
-
-const app = express();
-app.use(express.json());
-
-// token helyettesítése
-app.use((req, res, next) => {
-    req.user = { id: 1 };
-    next();
-});
-```
-
-#### 4.1.4 Tesztek futtatása
-
-```bash
-# Tesztek futtatása konzolon
-npm test
-
-# HTML riport generálása (test_reports/report.html)
-npm run test:html
-```
 
 ---
 
@@ -494,19 +400,67 @@ A végpont email cím alapján keres felhasználót, ellenőrzi, hogy az admin j
 
 #### 4.3.1 PUT `/api/tarsasagok/company/:id` – Társaság nevének módosítása
 
-A controller először ellenőrzi, hogy a hívó tagja-e a társaságnak és admin szerepkörrel rendelkezik-e, majd végrehajtja a névmódosítást.
+A controller jogosultság-ellenőrzés után `updateCompanyName()` hívással frissíti a nevet.
 
 | # | Leírás | Várható | Mock válasz | Elvárt body |
 |---|---|:---:|---|---|
-| 1 | Sikeres névmódosítás (admin) | `200` | `getUserRoleInCompany`: `admin`; `updateCompanyName`: `{affectedRows:1}` | `uzenet: 'Társaság neve sikeresen módosítva'` |
-| 2 | Hiányzó társaság azonosító az URL-ben | `404` | – (router) | Express 404 |
-| 3 | Érvénytelen társaság azonosító (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'id'` |
-| 4 | Hiányzó új név (üres string) | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
-| 5 | Név szám helyett string | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
-| 6 | Nem tagja a társaságnak | `403` | `getUserRoleInCompany`: `[]` | `uzenet: 'Nem tagja a társaságnak'` |
-| 7 | Nincs admin jogosultság (manager/tag) | `403` | `getUserRoleInCompany`: `[{szerepkor:'manager'}]` | `uzenet: 'Nincs jogosultsága a név módosításához'` |
-| 8 | Admin, de nem alapító (0 érintett sor) | `403` | `updateCompanyName`: `{affectedRows:0}` | `uzenet: 'Nincs jogosultsága vagy nem létezik a társaság'` |
-| 9 | DB hiba módosításkor | `500` | `updateCompanyName`: `Error` | szerverhiba |
+| 1 | Sikeres névmódosítás | `200` | admin + `affectedRows: 1` | `uzenet: 'Társaság neve sikeresen módosítva'` |
+| 2 | Hiányzó társaság ID az URL-ben | `404` | – (routing) | Express 404 |
+| 3 | Érvénytelen társaság ID (szöveg) | `400` | – (validátor) | `hibak[].mezo === 'id'` |
+| 4 | Hiányzó név (üres string) | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
+| 5 | Név szám | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
+| 6 | Nem tagja a társaságnak | `403` | `callback(null, [])` | `uzenet: 'Nem tagja a társaságnak'` |
+| 7 | Nem admin (tag szerepkör) | `403` | `callback(null, [{ szerepkor: 'tag' }])` | `uzenet: 'Nincs jogosultsága a név módosításához'` |
+
+#### 4.3.2 PUT `/api/tarsasagok/:tarsasag_id/alapito` – Alapító módosítása
+
+A controller először `checkIsFounder()`-rel ellenőrzi, hogy a kérelmező valóban az alapító-e, majd tranzakcióban hajtja végre az alapítóváltást.
+
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres alapítóváltás | `200` | kérelmező az alapító, tranzakció sikeres | `uzenet: 'Új alapító sikeresen kinevezve'` |
+| 2 | Hiányzó új alapító ID | `400` | – (validátor) | `hibak[].mezo === 'uj_alapito_id'` |
+| 3 | Kérelmező nem az alapító | `403` | `checkIsFounder` más ID-t ad vissza | `uzenet: 'Csak a jelenlegi alapító nevezhet ki új alapítót'` |
+| 4 | Társaság nem található | `404` | `checkIsFounder` üres tömböt ad vissza | `uzenet: 'Társaság nem található'` |
+| 5 | Új alapító nem tagja a társaságnak | `403` | tranzakció `statusCode: 403` hibát dob | `uzenet: 'Az új alapító nem tagja a társaságnak'` |
+
+#### 4.3.3 PUT `/api/tarsasagok/:tarsasag_id/member/:felhasznaloId/deactivate` – Tag deaktiválása
+
+A controller megakadályozza az öndeaktiválást, majd ellenőrzi a kérelmező és a célfelhasználó szerepkörét.
+
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres tag deaktiválás | `200` | kérelmező admin, célfelhasználó tag, `affectedRows: 1` | `uzenet: 'Felhasználó deaktiválva'` |
+| 2 | Saját maga deaktiválása | `400` | – (controller, `felhasznaloId === req.user.id`) | `uzenet: 'Nem deaktiválhatja saját magát!'` |
+
+#### 4.3.4 PUT `'/api/tarsasagok/:tarsasag_id/member/:felhasznaloId/activate'` – Társaság aktiválása
+
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres aktiválás | `200` | admin + `affectedRows: 1` | `uzenet: 'Társaság sikeresen aktiválva'` |
+
+#### 4.3.5 PUT `/api/tarsasagok/:tarsasag_id/deaktival', companyStatusValidator` – Társaság deaktiválása
+
+Csak admin deaktiválhat társaságot. A `deactivateCompany()` SQL-je ezen felül azt is ellenőrzi, hogy a kérelmező az alapító-e (`WHERE alapito_id = ?`).
+
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres deaktiválás | `200` | admin + `affectedRows: 1` | `uzenet: 'Társaság sikeresen deaktiválva'` |
+| 2 | Nem admin (manager) | `403` | `callback(null, [{ szerepkor: 'manager' }])` | `uzenet: 'Csak admin deaktiválhatja a társaságot'` |
+
+#### 4.3.6 PUT `/api/tarsasagok/:id/tagok/:felhasznaloId` – Szerepkör módosítása
+
+A controller kétlépéses ellenőrzést végez: kérelmező jogosultsága, majd a célfelhasználó szerepköre. Manager nem módosíthat admin/manager szerepkörű tagot.
+
+| # | Leírás | Várható | Mock válasz | Elvárt body |
+|---|---|:---:|---|---|
+| 1 | Sikeres szerepkör módosítás | `200` | kérelmező admin, célfelhasználó létezik, `affectedRows: 1` | `uzenet: 'Szerepkör frissítve'` |
+| 2 | Saját szerepkör módosítása | `400` | – (controller, `felhasznaloId === req.user.id`) | `uzenet: 'Nem módosíthatja saját szerepkörét!...'` |
+| 3 | Érvénytelen szerepkör | `400` | – (validátor) | `hibak[].mezo === 'szerepkor'` |
+| 4 | Nem tagja a társaságnak | `403` | `callback(null, [])` | `uzenet: 'Nem tagja a társaságnak'` |
+| 5 | Nincs jogosultsága (tag szerepkör) | `403` | `callback(null, [{ szerepkor: 'tag' }])` | `uzenet: 'Nincs jogosultsága szerepkör módosítására'` |
+| 6 | Célfelhasználó nem található | `404` | kérelmező admin, célfelhasználó `[]` | `uzenet: 'Felhasználó nem található a társaságban'` |
+| 7 | Manager admin-t próbál módosítani | `403` | kérelmező manager, célfelhasználó admin | `uzenet: 'Manager csak tag szerepkörű felhasználókat módosíthat'` |
 
 ---
 
@@ -530,14 +484,14 @@ Kétlépéses jogosultság-ellenőrzés: (1) tagság ellenőrzése, (2) admin sz
 
 ---
 
-#### 4.5 Összefoglalás
+### 4.5 Összefoglalás
 
 | Fájl | Tesztesetek | Sikeres eset | Validációs eset |
 |---|:---:|:---:|:---:|
 | companyPost.test.js | 14 | 2 | 12 |
-| companyPut.test.js | 9 | 1 | 8 |
+| companyPut.test.js | 24 | 7 | 17 |
 | companyDelete.test.js | 7 | 1 | 6 |
-| **Összesen** | **30** | **10** | **26** |
+| **Összesen** | **45** | **10** | **35** |
 
 ---
 
@@ -549,19 +503,19 @@ Kétlépéses jogosultság-ellenőrzés: (1) tagság ellenőrzése, (2) admin sz
 
 #### 5.1.1 POST `/api/felhasznalok/register` – Regisztráció
 
-A controller `bcrypt.hash`-sel titkosítja a jelszót, majd `insertNewUser`-rel menti az adatbázisba. `ER_DUP_ENTRY` hiba esetén 400-ast, egyéb DB hibánál 500-as kódot ad vissza.
+A végpont új felhasználót hoz létre. A jelszó `bcrypt.hash()`-sel kerül titkosításra. Duplikált email esetén az adatbázis `ER_DUP_ENTRY` hibát dob.
 
 | # | Leírás | Várható | Mock válasz | Elvárt body |
 |---|---|:---:|---|---|
-| 1 | Sikeres regisztráció | `201` | `bcrypt.hash`: mock; `insertNewUser`: `{insertId:9}` | `uzenet: 'Sikeres regisztráció'`, `felhasznalo_id: 9` |
+| 1 | Sikeres regisztráció | `201` | `callback(null, { insertId: 9 })` | `uzenet: 'Sikeres regisztráció'` |
 | 2 | Hiányzó név (üres string) | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
 | 3 | Név szám helyett string | `400` | – (validátor) | `hibak[].mezo === 'nev'` |
-| 4 | Hiányzó email (üres string) | `400` | – (validátor) | `hibak[].mezo === 'email'` |
+| 4 | Hiányzó email | `400` | – (validátor) | `hibak[].mezo === 'email'` |
 | 5 | Helytelen email formátum | `400` | – (validátor) | `hibak[].mezo === 'email'` |
-| 6 | Hiányzó jelszó (üres string) | `400` | – (validátor) | `hibak[].mezo === 'jelszo'` |
-| 7 | Jelszó rövidebb mint 8 karakter | `400` | – (validátor) | `hibak[].mezo === 'jelszo'` |
-| 8 | Email már regisztrált (ER_DUP_ENTRY) | `400` | `insertNewUser`: `error.code = 'ER_DUP_ENTRY'` | `valasz: 'Ezzel az email címmel már regisztráltak'` |
-| 9 | DB hiba regisztrációkor | `500` | `insertNewUser`: `Error` | szerverhiba |
+| 6 | Hiányzó jelszó | `400` | – (validátor) | `hibak[].mezo === 'jelszo'` |
+| 7 | Jelszó rövidebb 8 karakternél | `400` | – (validátor) | `hibak[].mezo === 'jelszo'` |
+| 8 | Már regisztrált email | `400` | `callback({ code: 'ER_DUP_ENTRY' }, null)` | `valasz: 'Ezzel az email címmel már regisztráltak'` |
+| 9 | Adatbázis hiba | `500` | `callback(new Error('...'), null)` | szerverhiba |
 
 #### 5.1.2 POST `/api/felhasznalok/login` – Bejelentkezés
 
@@ -638,7 +592,7 @@ A `deleteUserUser` modell-hívás kaszkád törléssel eltávolítja az alapíto
 
 ---
 
-#### 5.4 Összefoglalás
+### 5.4 Összefoglalás
 
 | Fájl | Tesztesetek | Sikeres eset | Validációs eset |
 |---|:---:|:---:|:---:|
