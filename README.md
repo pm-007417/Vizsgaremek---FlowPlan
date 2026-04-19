@@ -129,7 +129,7 @@ frontend/src/
 | Forráskód | [`/BACKEND`](./BACKEND) · [`/FRONTEND`](./FRONTEND) |
 | Adatbázis dump | [`/BACKEND/dumps/`](./BACKEND/dumps) |
 | Adatbázis modell diagram | [`/docs/db_diagram.png`](./docs/db_diagram.png) |
-| Dokumentáció | [`/docs/dokumentacio.md`](./docs/dokumentacio.md) |
+| Dokumentáció | [`/docs/FlowPlan_dokumentacio.md`](./docs/FlowPlan_dokumentacio.md) |
 | Teszt dokumentáció | [`/docs/tesztelesi_dokumentacio.md`](./docs/tesztelesi_dokumentacio.md) |
 | Tesztkód | [`/BACKEND/tests/`](./BACKEND/tests) |
 | Teszteredmények | [`/BACKEND/test_reports/`](./BACKEND/test_reports) |
