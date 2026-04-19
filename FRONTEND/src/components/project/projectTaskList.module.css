@@ -1,0 +1,37 @@
+.wrapper {
+    padding: 0.5rem 0;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table th {
+    text-align: left;
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+    color: var(--color-dark-mid);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.table td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--color-bg);
+}
+
+.table tbody tr {
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.table tbody tr:hover {
+    background-color: var(--color-bg);
+}
+
+.empty {
+    padding: 0.75rem 1rem;
+    color: var(--color-text-mid);
+    font-size: 0.9rem;
+}

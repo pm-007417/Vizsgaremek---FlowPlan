@@ -1,0 +1,235 @@
+/* fejléc */
+.topbar {
+    background-color: white;
+    height: 4rem;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: stretch;
+    gap: clamp(4px, 1vw, 12px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.logo_img {
+    content: url('../../../public/FlowPlan_logo_without_slogen_white.svg');
+    background: var(--color-primary);
+    padding: 0.5em 0.8em;
+    width: 4rem;
+    cursor: pointer;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    font-size: clamp(1.5rem, 3.8vw, 2.5rem);
+    font-weight: bold;
+    align-self: flex-end;
+    padding-bottom: 0.3rem;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    line-height: 1.1;
+    text-decoration: none;
+}
+
+.flow {
+    color: var(--color-primary);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.logo_plan {
+    color: var(--color-dark);
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+.slogan {
+    font-size: clamp(1rem, 2vw, 1.8rem);
+    font-weight: bold;
+    color: var(--color-dark-mid);
+    padding-left: .5rem;
+    line-height: 1.1;
+    align-self: center;
+}
+
+/* menüsáv */
+.direction {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.navbarstyle {
+    background: var(--color-primary);
+    width: 4rem;
+    position: fixed;
+    top: 4rem;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: clamp(0.8rem, 1.5vw, 1rem) !important;
+    color: white;
+    justify-content: top;
+    z-index: 900;
+}
+
+.hamburger {
+    background-color: var(--color-primary);
+    color: var(--color-primary-lighter);
+    border: none;
+    padding: 0.25em 0.5em;
+    width: 3rem;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.hamburger :global(.navbar-toggler-icon) {
+    filter: invert(1) !important;
+}
+
+/* Menüpontok alapból rejtve */
+.menuItems {
+    display: none;
+    width: max-content;
+}
+
+/* Megjelenik ha open */
+.menuOpen {
+    display: block;
+    background-color: var(--color-primary-light);
+    border-radius: 0.3rem;
+    margin-left: 1rem;
+    padding: .7rem 0;
+    position: relative;
+    z-index: 1000;
+}
+
+.link {
+    color: white !important;
+    padding: 0.5rem .7rem;
+    font-size: 1.1rem;
+}
+
+.link:hover {
+    background-color: rgba(255, 255, 255, 0.15) !important;
+    border-radius: 0;
+}
+
+.linkLogout {
+    color: var(--color-primary-dark) !important;
+    background-color: var(--color-primary-lighter) !important;
+    padding: 0.5rem .7rem;
+    font-size: 1.1rem;
+}
+
+.linkLogout:hover {
+    background-color: var(--color-primary-dark) !important;
+    color: white !important;
+    border-radius: 0;
+}
+
+/* Dropdown menü */
+.menuItems :global(.dropdown-menu) {
+    background-color: var(--color-border);
+    border: 1px solid var(--color-primary-light);
+    border-radius: 0.3rem;
+    margin-left: 75% !important;
+    margin-top: -2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.menuItems :global(.dropdown-item) {
+    color: var(--color-dark) !important;
+}
+
+.menuItems :global(.dropdown-item:hover) {
+    background-color: rgba(255, 255, 255, 0.30);
+    color: white;
+}
+
+.userInfo {
+    display: flex;
+    align-items: end;
+    padding-bottom: .5rem;
+    gap: 8px;
+    margin-left: auto;
+    margin-right: 2rem;
+    color: var(--color-dark-mid);
+    font-size: 0.9rem;
+}
+
+.userInfo:hover {
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.userInfo i {
+    font-size: 1.2rem;
+}
+
+/* mobil */
+
+@media (max-width: 550px) {
+    .flow {
+        color: var(--color-primary);
+        flex-shrink: 0;
+        white-space: nowrap;
+        position: relative;
+        top: .5rem;
+    }
+
+    .logo_plan {
+        color: var(--color-dark);
+        flex-shrink: 0;
+        white-space: nowrap;
+        position: relative;
+        top: .5rem;
+    }
+
+    .slogan {
+        font-size: clamp(0.7rem, 1.8vw, 1.3rem);
+        font-weight: bold;
+        color: var(--color-dark-mid);
+        padding-left: .5rem;
+        line-height: normal;
+        align-self: center;
+    }
+
+    .userInfo {
+        margin-right: 0;
+    }
+}
+
+@media (max-width: 450px) {
+    .flow {
+        color: var(--color-primary);
+        flex-shrink: 0;
+        white-space: nowrap;
+        position: relative;
+        top: .1rem;
+    }
+
+    .logo_plan {
+        color: var(--color-dark);
+        flex-shrink: 0;
+        white-space: nowrap;
+        position: relative;
+        top: .1rem;
+    }
+
+    .slogan {
+        font-size: clamp(0.7rem, 1.8vw, 1.3rem);
+        font-weight: bold;
+        color: var(--color-dark-mid);
+        padding-left: .5rem;
+        line-height: 1.1;
+        display: flex;
+        align-items: center;
+    }
+}

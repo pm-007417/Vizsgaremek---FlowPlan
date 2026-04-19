@@ -1,0 +1,14 @@
+.layout {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    margin-top: 3.5rem;
+}
+
+.content {
+    flex: 1;
+    padding: 1.8rem 2.5rem;
+    margin-left: 3rem;
+    color: var(--color-dark);
+}

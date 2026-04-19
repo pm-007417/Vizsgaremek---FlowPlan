@@ -1,0 +1,173 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    color: var(--color-dark);
+    font-size: 1.75rem;
+    margin: 0;
+}
+
+.titleIcon {
+    color: var(--color-primary);
+    margin-right: 0.5rem;
+}
+
+.createButton {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    border: none;
+    color: var(--color-dark);
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.createButton:hover {
+    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.5rem rgba(247, 197, 72, 0.3);
+}
+
+.spinner {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.spinnerIcon {
+    color: var(--color-primary);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18.75rem, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    background: white;
+    border-radius: 0.625rem;
+    border: none;
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-left: 0.3125rem solid var(--color-accent-dark);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.card:hover {
+    transform: translateY(-0.3125rem);
+    box-shadow: 0 0.5rem 1.25rem rgba(247, 197, 72, 0.3);
+}
+
+.cardBody {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+.cardTitle {
+    color: var(--color-dark);
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+}
+
+.cardIcon {
+    color: var(--color-primary);
+    margin-right: 0.5rem;
+}
+
+.cardText {
+    font-size: 0.875rem;
+    color: var(--color-dark-mid);
+    margin-bottom: 0.75rem;
+}
+
+.badge {
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.badgeAdmin {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+}
+
+.badgeManager {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+}
+
+.badgeTag {
+    background: linear-gradient(135deg, var(--color-dark-mid) 0%, var(--color-dark) 100%);
+    color: white;
+}
+
+.statusActive {
+    background: linear-gradient(135deg, var(--color-success) 0%, var(--color-success-dark) 100%);
+    color: white;
+}
+
+.statusInactive {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+}
+
+.cardFooter {
+    background: transparent;
+    border-top: none;
+    padding: 0 1.5rem 1.5rem;
+}
+
+.detailsButton {
+    width: 100%;
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+    border: none;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.detailsButton:hover {
+    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    color: var(--color-dark);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.5rem rgba(247, 197, 72, 0.3);
+}
+
+.alertInfo {
+    background-color: rgba(247, 197, 72, 0.1);
+    border-left: 0.3125rem solid var(--color-accent);
+    color: var(--color-dark);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+/* Mobil */
+@media (max-width: 767px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .createButton {
+        width: 100%;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

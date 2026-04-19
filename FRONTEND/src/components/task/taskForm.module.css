@@ -1,0 +1,158 @@
+/* ── Form sorok ── */
+.formRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.65rem 1rem;
+    border-bottom: 1px solid var(--color-bg);
+    gap: 1rem;
+}
+
+.formRow:last-of-type {
+    border-bottom: none;
+}
+
+.formLabel {
+    font-weight: bold;
+    font-size: 0.85rem;
+    color: var(--color-dark);
+    flex-shrink: 0;
+    min-width: 7rem;
+}
+
+.required {
+    color: var(--color-primary);
+    margin-left: 0.15rem;
+}
+
+/* ── Input / Textarea / Select ── */
+.formInput,
+.formTextarea,
+.formSelect {
+    flex: 1;
+    border: 2px solid var(--color-border);
+    border-radius: 0.3rem;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.92rem;
+    color: var(--color-dark);
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+    background-color: white;
+    width: 100%;
+}
+
+.formInput:focus,
+.formTextarea:focus,
+.formSelect:focus {
+    border-color: var(--color-accent);
+}
+
+.formTextarea {
+    resize: vertical;
+    line-height: 1.45;
+}
+
+/* ── Select wrapper (egyéni nyíl ikon) ── */
+.selectWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.selectWrapper .formSelect {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2rem;
+}
+
+.selectWrapper i {
+    position: absolute;
+    right: 0.7rem;
+    pointer-events: none;
+    font-size: 0.8rem;
+    color: var(--color-text-mid);
+}
+
+/* ── Gombok ── */
+.formActions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 1rem;
+    border-top: 1px solid var(--color-bg);
+}
+
+.backButton {
+    background-color: var(--color-dark-mid);
+    color: white;
+    border: none;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    margin-top: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: bold;
+    transition: background-color 0.15s;
+}
+
+.backButton:hover {
+    background-color: var(--color-dark);
+    color: white;
+}
+
+.submitButton {
+    background-color: var(--color-accent);
+    color: var(--color-dark);
+    border: none;
+    margin-top: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    transition: background-color 0.15s;
+}
+
+.submitButton:hover {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ── Reszponzív ── */
+@media (max-width: 480px) {
+    .formRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.4rem;
+    }
+
+    .formLabel {
+        min-width: unset;
+    }
+
+    .formInput,
+    .formTextarea,
+    .selectWrapper {
+        width: 100%;
+        flex: unset;
+    }
+
+    .formActions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+
+    }
+
+    .submitButton {
+        text-align: center;
+    }
+}

@@ -1,0 +1,133 @@
+.card {
+    border-radius: 0.9375rem; 
+    border: none;
+    border-left: 0.3125rem solid var(--color-accent);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+}
+
+.cardHeader {
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    border-top-left-radius: 0.9375rem;
+    border-top-right-radius: 0.9375rem;
+    padding: 1.5rem;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.cardBody {
+    padding: 2rem;
+}
+
+.alert {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.alertError {
+    background-color: rgba(250, 74, 68, 0.1);
+    border-left: 0.25rem solid var(--color-primary);
+    color: var(--color-primary-dark);
+}
+
+.alertSuccess {
+    background-color: rgba(247, 197, 72, 0.1);
+    border-left: 0.25rem solid var(--color-accent);
+    color: var(--color-dark);
+}
+
+.formGroup {
+    margin-bottom: 1.5rem;
+}
+
+.label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-dark);
+}
+
+.input {
+    width: 100%;
+    border: 0.125rem solid var(--color-border);
+    border-radius: 0.5rem;
+    padding: 0.6rem;
+    color: var(--color-dark);
+    font-size: 0.95rem;
+    transition: border-color 0.3s ease;
+}
+
+.input:focus {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 0.2rem rgba(250, 74, 68, 0.25);
+    outline: none;
+}
+
+.helpText {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-dark-mid);
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.cancelButton {
+    background: var(--color-dark-mid);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancelButton:hover {
+    background: var(--color-dark);
+    color: white;
+}
+
+.submitButton {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.submitButton:hover {
+    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    color: var(--color-dark);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.5rem rgba(247, 197, 72, 0.3);
+}
+
+.submitButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Reszponzív */
+@media (max-width: 575px) {
+    .actions {
+        flex-direction: column;
+    }
+
+    .cancelButton,
+    .submitButton {
+        width: 100%;
+    }
+}

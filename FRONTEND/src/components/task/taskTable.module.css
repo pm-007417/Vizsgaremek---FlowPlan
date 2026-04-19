@@ -1,0 +1,207 @@
+.table {
+    width: 100%;
+    border-radius: 0.3rem;
+    overflow: hidden;
+    background-color: white;
+    overflow: hidden;
+    margin-bottom: 0.3rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.header th {
+    background-color: var(--color-dark-mid);
+    color: white;
+    padding: 0.8rem 1rem;
+    font-weight: bolder;
+    font-size: 1.1rem;
+    cursor: pointer;
+    user-select: none;
+    white-space: nowrap;
+    border: none;
+}
+
+.header th:hover {
+    background-color: var(--color-dark-light);
+    color: white;
+}
+
+.row {
+    cursor: pointer;
+    color: var(--color-dark);
+    transition: background-color 0.15s;
+    border-bottom: 2px solid var(--color-border);
+}
+
+.row:hover {
+    background-color: var(--color-border) !important;
+    color: var(--color-dark);
+    cursor: pointer;
+    border: none;
+}
+
+.row td {
+    padding: 0.75rem 1rem;
+    vertical-align: middle;
+}
+
+.button {
+    margin-top: 1rem;
+    background-color: var(--color-dark);
+    color: white;
+    border: none;
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.15s;
+}
+
+.button:hover {
+    background-color: var(--color-text-mid);
+}
+
+.newTaskButton {
+    margin-top: 1rem;
+    background-color: white;
+    color: var(--color-dark);
+    border: 2px solid var(--color-dark-mid);
+    padding: 0.5rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    transition: background-color 0.15s;
+}
+
+.newTaskButton:hover {
+    background-color: var(--color-dark-light);
+    color: white;
+}
+
+/* Mobilon elrejtjük a táblázatot */
+.tableWrapper {
+    overflow-x: auto;
+}
+
+@media (max-width: 946px) {
+
+    .table,
+    .table thead,
+    .table tbody,
+    .table th,
+    .table td,
+    .table tr {
+        display: block;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .row {
+        background-color: white;
+        border-radius: 0.5rem;
+        margin-bottom: 0.3rem;
+        border: none;
+        border-bottom: none;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        padding: 0 0 0.2rem 0;
+        overflow: hidden;
+    }
+
+    table thead th:hover {
+        background-color: var(--color-text-mid);
+        color: white;
+    }
+
+    .row td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        border-bottom: 1px solid var(--color-bg);
+        font-size: 0.95rem;
+    }
+
+    .row td:first-child {
+        background-color: var(--color-dark-mid);
+        color: white;
+        font-weight: bold;
+        border-bottom: none;
+    }
+
+    .row td:first-child::before {
+        background-color: var(--color-dark-mid);
+        color: white;
+        font-weight: bold;
+        border-bottom: none;
+    }
+
+    .row td:last-child {
+        border-bottom: none;
+    }
+
+    .row td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: var(--color-dark);
+        font-size: 0.85rem;
+        flex-shrink: 0;
+        margin-right: 1rem;
+    }
+
+    .row:hover td::before {
+        color: white;
+    }
+
+    .row:hover td {
+        color: white;
+    }
+}
+
+.mobilRendezes {
+    display: none;
+}
+
+@media (max-width: 946px) {
+    .mobilRendezes {
+        display: block;
+        margin-bottom: 0.8rem;
+    }
+
+    .mobilRendezes select {
+        width: 100%;
+        padding: 0.5rem 1rem;
+        padding-right: 2.5rem;
+        border-radius: 0.5rem;
+        border: none;
+        background-color: var(--color-dark);
+        color: white;
+        font-size: 0.95rem;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    .mobilRendezes select option {
+        background-color: white;
+        color: var(--color-dark);
+    }
+
+    .selectWrapper {
+        position: relative;
+    }
+
+    .selectWrapper i {
+        position: absolute;
+        right: 0.8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        color: white;
+        font-size: 0.9rem;
+    }
+}
+

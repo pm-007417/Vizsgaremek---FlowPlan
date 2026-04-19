@@ -1,0 +1,254 @@
+.spinner {
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.spinnerIcon {
+    color: var(--color-primary);
+}
+
+.card {
+    border-radius: 0.9375rem; 
+    border: none;
+    border-left: 0.3125rem solid var(--color-accent);
+    box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+.cardHeader {
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    border-top-left-radius: 0.9375rem;
+    border-top-right-radius: 0.9375rem;
+    padding: 1.5rem;
+}
+
+.cardTitle {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.cardBody {
+    padding: 2rem;
+}
+
+.infoRow {
+    display: flex;
+    margin-bottom: 1.5rem;
+}
+
+.infoLabel {
+    flex: 0 0 33.333%;
+    font-weight: bold;
+    color: var(--color-dark);
+}
+
+.infoValue {
+    flex: 1;
+    color: var(--color-dark-mid);
+}
+
+.divider {
+    border-color: var(--color-border);
+    margin: 1.5rem 0;
+}
+
+.sectionTitle {
+    color: var(--color-dark);
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.companiesList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.companyItem {
+    border: 0.125rem solid var(--color-bg);
+    border-left: 0.1875rem solid var(--color-accent);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.companyItem:hover {
+    background-color: rgba(247, 197, 72, 0.05);
+    border-left-color: var(--color-primary);
+}
+
+.companyItemContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.companyInfo h6 {
+    margin: 0 0 0.5rem 0;
+    color: var(--color-dark);
+}
+
+.companyRole {
+    font-size: 0.875rem;
+    color: var(--color-dark-mid);
+}
+
+.badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.badgeAdmin {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+}
+
+.badgeManager {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+}
+
+.badgeTag {
+    background: linear-gradient(135deg, var(--color-dark-mid) 0%, var(--color-dark) 100%);
+    color: white;
+}
+
+.openButton {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.openButton:hover {
+    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    color: var(--color-dark);
+    transform: translateY(-0.125rem);
+}
+
+.alertInfo {
+    background-color: rgba(247, 197, 72, 0.1);
+    border-left: 0.25rem solid var(--color-accent);
+    color: var(--color-dark);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+.editButton {
+    background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+    color: var(--color-dark);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.editButton:hover {
+    background: linear-gradient(135deg, var(--color-accent-dark) 0%, var(--color-accent) 100%);
+    color: var(--color-dark);
+    transform: translateY(-0.125rem);
+}
+
+.logoutButton {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.logoutButton:hover {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: white;
+    transform: translateY(-0.125rem);
+}
+
+.dangerZone {
+    background-color: rgba(250, 74, 68, 0.05);
+    border: 0.125rem solid rgba(250, 74, 68, 0.3);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.dangerZoneTitle {
+    color: var(--color-primary);
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+}
+
+.dangerZoneText {
+    color: var(--color-dark);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+}
+
+.deleteAccountButton {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.deleteAccountButton:hover {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    transform: translateY(-0.125rem);
+    box-shadow: 0 0.25rem 0.5rem rgba(250, 74, 68, 0.3);
+}
+
+/* Reszponzív */
+@media (max-width: 767px) {
+    .infoRow {
+        flex-direction: column;
+    }
+
+    .infoLabel {
+        margin-bottom: 0.25rem;
+    }
+
+    .companyItemContent {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+
+    .openButton {
+        width: 100%;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .editButton,
+    .logoutButton {
+        width: 100%;
+    }
+}

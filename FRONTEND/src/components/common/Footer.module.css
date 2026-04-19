@@ -1,0 +1,16 @@
+.footer {
+    background-color: var(--color-dark);
+    color: white;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 1500;
+}
+
+.text {    
+    text-align: center;
+}
+
+.bottom {
+    background-color: var(--color-dark-mid);
+}

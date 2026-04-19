@@ -1,0 +1,29 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    padding: 2rem 1rem 1rem 1rem;
+}
+
+/* Desktop */
+@media (min-width: 305px) {
+    .content {
+        padding: 2rem 1rem;
+        align-items: flex-start;
+    }
+}
+
+/* Mobil */
+@media (min-width: 375px) and (max-width: 1024px) {
+    .content {
+        padding: 0.5rem; 
+        align-items: flex-start;
+    }
+}
