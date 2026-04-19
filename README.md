@@ -1,4 +1,4 @@
-# Vizsgaremek---FlowPlan
+# Vizsgaremek - FlowPlan
 
 **FlowPlan** egy modern, webalapú projektmenedzsment alkalmazás vállalatok, szervezetek és csapatok számára. Célja, hogy átláthatóbbá és hatékonyabbá tegye a projektek és feladatok kezelését, miközben támogatja a csapaton belüli együttműködést.
 
