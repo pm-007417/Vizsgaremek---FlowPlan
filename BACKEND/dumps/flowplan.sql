@@ -21,6 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `flowplan`
 --
 
+CREATE DATABASE IF NOT EXISTS `flowplan` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_hungarian_ci;
+USE `flowplan`;
+
 -- --------------------------------------------------------
 
 --
